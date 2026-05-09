@@ -1,0 +1,13 @@
+{
+  "name": "adoptapokemon",
+  "version": "1.0.0",
+  "description": "MVP Adopción Pokémon con Tailwind v4",
+  "main": "index.php",
+  "scripts": {
+    "dev": "npx @tailwindcss/cli -i ./src/input.css -o ./public/assets/css/style.css --watch"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.4",
+    "tailwindcss": "^4.2.4"
+  }
+}

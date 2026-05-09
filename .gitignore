@@ -1,0 +1,4 @@
+.DS_Store
+/vendor
+config/Database_secret.php (si llegas a crear uno)
+.env

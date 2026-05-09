@@ -1,0 +1,13 @@
+Options -Indexes
+
+RewriteEngine On
+# Establecemos la base de la ruta (el nombre de tu carpeta en htdocs)
+RewriteBase /adoptaPokemon/
+
+# Si alguien intenta entrar a la raíz, lo mandamos a /public
+RewriteRule ^$ public/ [L]
+
+# Si el archivo no existe, intentamos buscarlo en /public
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]
