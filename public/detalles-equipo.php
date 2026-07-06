@@ -9,17 +9,17 @@ $db = $database->getConnection();
 if (isset($_GET['id'])) {
     $equipo_id = $_GET['id'];
 
-    // 1. Obtener datos del equipo
+    //Obtener datos del equipo
     $stmt = $db->prepare("SELECT * FROM equipos WHERE id = ?");
     $stmt->execute([$equipo_id]);
     $equipo = $stmt->fetch(PDO::FETCH_OBJ);
 
-    // 2. Obtener miembros del equipo (Usuarios)
+    //Obtener miembros del equipo (Usuarios)
     $stmtM = $db->prepare("SELECT nombre, rol FROM usuarios WHERE equipo_id = ?");
     $stmtM->execute([$equipo_id]);
     $miembros = $stmtM->fetchAll(PDO::FETCH_OBJ);
 
-    // 3. Obtener Pokémon asignados a esta unidad
+    //Obtener Pokémon asignados a esta unidad
     $stmtP = $db->prepare("SELECT * FROM pokemon_adopcion WHERE equipo_id = ?");
     $stmtP->execute([$equipo_id]);
     $pokemons_asignados = $stmtP->fetchAll(PDO::FETCH_OBJ);

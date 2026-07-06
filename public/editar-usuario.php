@@ -6,7 +6,7 @@ $database = new Database();
 $db = $database->getConnection();
 $mensaje = "";
 
-// 1. Obtener los datos del usuario a editar
+//Obtener los datos del usuario a editar
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
     

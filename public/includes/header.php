@@ -35,7 +35,7 @@
             </div>
         <?php endif; ?>
 
-        <!-- Dentro del <nav> de tu header.php -->
+        
 <?php if ($_SESSION['usuario_rol'] === 'rescatista'): ?>
     <a href="mi-panel.php" class="text-xs font-bold uppercase tracking-widest text-blue-400 hover:text-blue-300 transition-colors">
         🛸 Mi Unidad

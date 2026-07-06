@@ -1,5 +1,5 @@
 <?php
-require_once '../config/admin_auth.php'; // 🛡️ Solo el Admin hace esto
+require_once '../config/admin_auth.php'; //Solo el Admin hace esto
 require_once '../config/Database.php';
 
 if (isset($_GET['action']) && isset($_GET['id'])) {

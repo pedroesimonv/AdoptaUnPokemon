@@ -1,5 +1,5 @@
 <?php
-require_once '../config/auth.php'; // 🛡️ EL PORTERO VA PRIMERO
+require_once '../config/auth.php';
 require_once '../config/Database.php';
 
 // Verificamos que nos llegue un ID por la URL

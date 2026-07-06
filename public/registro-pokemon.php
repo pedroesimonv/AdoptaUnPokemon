@@ -2,7 +2,7 @@
 // ==========================================
 // 1. LÓGICA DE SERVIDOR (PHP)
 // ==========================================
-require_once '../config/auth.php'; // 🛡️ EL PORTERO VA PRIMERO
+require_once '../config/auth.php';
 require_once '../config/Database.php';
 
 $mensaje = "";
@@ -12,14 +12,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $database = new Database();
     $db = $database->getConnection();
 
-    // Preparamos la consulta SQL
-    // 💡 TIP: Aquí podrías añadir un campo 'imagen_url' para guardar la foto de la API y no pedirla cada vez.
     $query = "INSERT INTO pokemon_adopcion (nombre_propio, especie_api_id, estado, descripcion, fecha_rescate) 
               VALUES (:nombre, :especie, :estado, :desc, :fecha)";
     
     $stmt = $db->prepare($query);
 
-    // Vinculamos los datos del formulario con la consulta (Seguridad ante Inyecciones SQL)
+    // Vinculamos los datos del formulario con la consulta
     $stmt->bindParam(":nombre", $_POST['nombre']);
     $stmt->bindParam(":especie", $_POST['especie'], PDO::PARAM_INT);
     $stmt->bindParam(":estado", $_POST['estado']);
@@ -32,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensaje = "❌ Error al registrar.";
     }
 }
-include 'includes/header.php'; // HEADER
+include 'includes/header.php';
 ?>
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"></div>
 
@@ -119,7 +117,7 @@ include 'includes/header.php'; // HEADER
     </div>
 
     <script>
-        // Escuchamos cuando el usuario deja de escribir en el campo ID (evento 'blur')
+        // Escuchamos cuando el usuario deja de escribir en el campo ID
         document.getElementById('input_id_api').addEventListener('blur', function() {
             const id = this.value;
             const displayNombre = document.getElementById('nombre_especie_api');
@@ -127,14 +125,14 @@ include 'includes/header.php'; // HEADER
             if (id > 0) {
                 displayNombre.value = "Buscando...";
                 
-                // Llamamos a la API directamente desde el navegador (más rápido)
+                // Llamamos a la API directamente desde el navegador
                 fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
                     .then(response => {
                         if (!response.ok) throw new Error('No encontrado');
                         return response.json();
                     })
                     .then(data => {
-                        // 💡 TIP: Aquí podrías obtener también data.types[0].type.name para saber el tipo
+                        
                         displayNombre.value = data.name.toUpperCase();
                     })
                     .catch(error => {
@@ -146,7 +144,7 @@ include 'includes/header.php'; // HEADER
 
 
 <?php 
-include 'includes/footer.php'; // FOOTER
+include 'includes/footer.php';
 ?>
 
 </body>

@@ -6,7 +6,7 @@ require_once '../config/PokeApi.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// 1. Obtenemos el equipo de Benito
+//Obtenemos el equipo del usuario logueado para filtrar "Mi Unidad"
 $stmtU = $db->prepare("SELECT equipo_id FROM usuarios WHERE id = ?");
 $stmtU->execute([$_SESSION['usuario_id']]);
 $userData = $stmtU->fetch(PDO::FETCH_OBJ);
@@ -17,17 +17,17 @@ $compañeros = [];
 $mis_pokemons = [];
 
 if ($equipo_id) {
-    // 2. Info del equipo
+    //Info del equipo
     $stmtE = $db->prepare("SELECT * FROM equipos WHERE id = ?");
     $stmtE->execute([$equipo_id]);
     $equipo = $stmtE->fetch(PDO::FETCH_OBJ);
 
-    // 3. Compañeros
+    //Compañeros
     $stmtC = $db->prepare("SELECT nombre, rol FROM usuarios WHERE equipo_id = ? AND id != ?");
     $stmtC->execute([$equipo_id, $_SESSION['usuario_id']]);
     $compañeros = $stmtC->fetchAll(PDO::FETCH_OBJ);
 
-    // 4. Pokémon asignados (Aquí está la clave)
+    //Pokémon asignados
     $stmtP = $db->prepare("SELECT * FROM pokemon_adopcion WHERE equipo_id = ?");
     $stmtP->execute([$equipo_id]);
     $mis_pokemons = $stmtP->fetchAll(PDO::FETCH_OBJ);

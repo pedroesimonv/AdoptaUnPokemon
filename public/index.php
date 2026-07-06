@@ -1,11 +1,16 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
 // ==========================================
 // 1. INICIO DE SESIÓN Y LÓGICA
 // ==========================================
 session_start();
 require_once '../config/Database.php';
 
-// Si ya está logueado, lo mandamos directo al listado
 if (isset($_SESSION['usuario_id'])) {
     header("Location: listado-pokemon.php");
     exit();
@@ -13,35 +18,36 @@ if (isset($_SESSION['usuario_id'])) {
 
 $error = "";
 
-// Verificamos si se ha enviado el formulario
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $database = new Database();
     $db = $database->getConnection();
 
-    $email = $_POST['email'];
+    $email = trim($_POST['email']); // Limpiamos espacios en blanco
     $password = $_POST['password'];
 
     // Buscamos al usuario por su email
-    $query = "SELECT * FROM usuarios WHERE email = :email";
+    $query = "SELECT id, nombre, email, password, rol FROM usuarios WHERE email = :email";
     $stmt = $db->prepare($query);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
 
-    // Importante: FETCH_OBJ para que funcione el $user->password
-    $user = $stmt->fetch(PDO::FETCH_OBJ);
+    // Usamos FETCH_ASSOC para asegurar compatibilidad estricta de tipos con Postgres
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    
 
-    // Verificamos si existe y si la contraseña coincide
-    if ($user && password_verify($password, $user->password)) {
-        $_SESSION['usuario_id'] = $user->id;
-        $_SESSION['usuario_nombre'] = $user->nombre;
-        $_SESSION['usuario_rol'] = $user->rol; // Guardamos el rol para el header
+    // Verificamos si existe el usuario y si coincide la contraseña
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['usuario_id'] = $user['id'];
+        $_SESSION['usuario_nombre'] = $user['nombre'];
+        $_SESSION['usuario_rol'] = $user['rol'];
         
         header("Location: listado-pokemon.php");
         exit();
     } else {
         $error = "Credenciales incorrectas. Inténtalo de nuevo.";
     }
-} // <--- Aquí es donde probablemente faltaba el cierre antes
+}
 ?>
 
 <!DOCTYPE html>

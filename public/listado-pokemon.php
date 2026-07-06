@@ -6,17 +6,17 @@ require_once '../config/PokeApi.php';
 $database = new Database();
 $db = $database->getConnection();
 
-// 1. OBTENER DATOS DEL USUARIO (Para filtrar por "Mi Unidad")
+//OBTENER DATOS DEL USUARIO
 $stmtU = $db->prepare("SELECT equipo_id FROM usuarios WHERE id = ?");
 $stmtU->execute([$_SESSION['usuario_id']]);
 $userDB = $stmtU->fetch(PDO::FETCH_OBJ);
 $mi_equipo_id = $userDB->equipo_id ?? null;
 
-// 2. CAPTURAR FILTROS
+//CAPTURAR FILTROS
 $filtro_estado = $_GET['estado'] ?? '';
 $filtro_unidad = $_GET['unidad'] ?? '';
 
-// 3. CONSTRUCCIÓN DINÁMICA DE LA CONSULTA SQL
+//CONSTRUCCIÓN DINÁMICA DE LA CONSULTA SQL
 $sql = "SELECT * FROM pokemon_adopcion WHERE 1=1";
 $params = [];
 
@@ -36,7 +36,7 @@ $stmt = $db->prepare($sql);
 $stmt->execute($params);
 $pokemons = $stmt->fetchAll(PDO::FETCH_OBJ);
 
-// 4. DATOS PARA SELECTORES
+//DATOS PARA SELECTORES
 $queryEquipos = "SELECT id, nombre_equipo FROM equipos";
 $todosLosEquipos = $db->query($queryEquipos)->fetchAll(PDO::FETCH_OBJ);
 

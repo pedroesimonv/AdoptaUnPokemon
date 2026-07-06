@@ -5,6 +5,6 @@ session_start();
 if (!isset($_SESSION['usuario_id'])) {
     // Lo mandamos de vuelta al login
     header("Location: index.php");
-    exit(); // Bloqueamos el resto del código
+    exit(); 
 }
 ?>

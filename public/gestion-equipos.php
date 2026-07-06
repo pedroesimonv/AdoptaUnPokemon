@@ -2,12 +2,27 @@
 require_once '../config/admin_auth.php';
 require_once '../config/Database.php';
 
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 $database = new Database();
 $db = $database->getConnection();
 $mensaje = "";
 
-// 1. Procesar creación de equipo (Mantenemos tu lógica anterior)
+// Procesar creación de equipo
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Si el token recibido ya fue procesado antes, ignoramos por completo el INSERT
+    if (isset($_POST['form_token']) && isset($_SESSION['last_processed_token']) && $_POST['form_token'] === $_SESSION['last_processed_token']) {
+        header("Location: gestion-equipos.php");
+        exit();
+    }
+
+    // Si el token es nuevo, lo guardamos en la sesión para futuras verificaciones
+    if (isset($_POST['form_token'])) {
+        $_SESSION['last_processed_token'] = $_POST['form_token'];
+    }
+
     $nombre = $_POST['nombre_equipo'];
     $especialidad = $_POST['especialidad'];
     $zona = $_POST['zona_asignada'];
@@ -16,11 +31,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
               VALUES (:nom, :esp, :zona)";
     $stmt = $db->prepare($query);
     if ($stmt->execute([':nom' => $nombre, ':esp' => $especialidad, ':zona' => $zona])) {
-        $mensaje = "🛡️ Unidad '$nombre' desplegada correctamente.";
+        header("Location: gestion-equipos.php?status=success&msg=" . urlencode($nombre));
+        exit();
     }
 }
 
-// 2. Obtener todos los equipos
+if (isset($_GET['status']) && $_GET['status'] === 'success' && isset($_GET['msg'])) {
+    $nombre_unidad = htmlspecialchars($_GET['msg']);
+    $mensaje = "🛡️ Unidad '$nombre_unidad' desplegada correctamente.";
+}
+
+// Generamos un identificador único aleatorio para este renderizado del formulario
+$nuevo_token = uniqid('form_', true);
+
+//Obtener todos los equipos
 $equipos = $db->query("SELECT * FROM equipos")->fetchAll(PDO::FETCH_OBJ);
 
 include 'includes/header.php';
@@ -40,6 +64,7 @@ include 'includes/header.php';
                 <?php endif; ?>
 
                 <form method="POST" class="space-y-4">
+                    <input type="hidden" name="form_token" value="<?php echo $nuevo_token; ?>">
                     <input type="text" name="nombre_equipo" required placeholder="Nombre del Escuadrón" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 text-white outline-none focus:border-yellow-500 transition-all">
                     <select name="especialidad" class="w-full p-4 rounded-2xl bg-slate-800 border border-slate-700 text-white outline-none focus:border-yellow-500">
                         <option value="Incendios">🔥 Control de Incendios</option>
@@ -88,13 +113,13 @@ include 'includes/header.php';
                                 </div>
                             </div>
                             
-                            <!-- BOTÓN DETALLES (Ahora con función JS) -->
+                            <!-- BOTÓN DETALLES -->
                             <button onclick="toggleEquipo(<?php echo $e->id; ?>)" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all border border-slate-700">
                                 <span id="text-<?php echo $e->id; ?>">Ver Detalles</span>
                             </button>
                         </div>
 
-                        <!-- PANEL DESPLEGABLE (Oculto por defecto) -->
+                        <!-- PANEL DESPLEGABLE -->
                         <div id="details-<?php echo $e->id; ?>" class="hidden bg-slate-950/50 border-t border-slate-800 p-8 animate-fade-in">
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <!-- Miembros -->
@@ -141,7 +166,7 @@ function toggleEquipo(id) {
     const panel = document.getElementById('details-' + id);
     const text = document.getElementById('text-' + id);
     
-    // Cerramos todos los demás paneles para que sea un acordeón real (opcional)
+    // Cerre todos los demás paneles para que sea un acordeón real (opcional)
     // document.querySelectorAll('[id^="details-"]').forEach(p => {
     //     if(p.id !== 'details-' + id) p.classList.add('hidden');
     // });

@@ -7,7 +7,7 @@ $database = new Database();
 $db = $database->getConnection();
 $mensaje = "";
 
-// 1. Verificar si tenemos el ID del Pokémon
+//Verificar si tenemos el ID del Pokémon
 if (!isset($_GET['id'])) {
     header("Location: listado-pokemon.php");
     exit();
@@ -15,7 +15,7 @@ if (!isset($_GET['id'])) {
 
 $id = $_GET['id'];
 
-// 2. Procesar la actualización si se envía el formulario
+//Procesar la actualización si se envía el formulario
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nombre = $_POST['nombre_propio'];
     $estado = $_POST['estado'];
@@ -47,10 +47,10 @@ if (!$pokemon) {
     die("Pokémon no encontrado en la base de datos.");
 }
 
-// 4. Obtener datos de la API para la cabecera visual
+//Obtener datos de la API para la cabecera visual
 $pokeData = PokeApi::getPokemonData($pokemon->especie_api_id);
 
-// 5. Obtener equipos para el desplegable
+//Obtener equipos para el desplegable
 $equipos = $db->query("SELECT id, nombre_equipo FROM equipos")->fetchAll(PDO::FETCH_OBJ);
 
 include 'includes/header.php';
