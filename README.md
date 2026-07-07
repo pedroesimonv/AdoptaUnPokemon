@@ -16,13 +16,13 @@ This project is a web application designed for managing rescue operations and pe
 
 ## Visual Preview
 
-![Admin Dashboard](assets/screenshots/dashboard.png)
+![Admin Dashboard](public/assets/screenshots/dashboard.png)
 
 <p align="center">
   <em>Figure 1: Main Administrative Dashboard and Unit Overview.</em>
 </p>
 
-![User Login](assets/screenshots/login.png)
+![User Login](public/assets/screenshots/login.png)
 
 <p align="center">
   <em>Figure 2: Access Control and Authentication Interface.</em>
