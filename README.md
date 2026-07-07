@@ -1,31 +1,38 @@
-# 🐾 Pokémon Rescue & Team Manager (MVP)
+# Pokémon Rescue & Team Manager (MVP)
 
-Este proyecto es una aplicación web de gestión de equipos de rescate y personal, desarrollada en PHP y MySQL. Aunque utiliza la temática Pokémon (vía PokeAPI), el núcleo del sistema es un **CRUD con Control de Acceso Basado en Roles (RBAC)** diseñado para coordinar misiones de emergencia.
+This project is a web application designed for managing rescue operations and personnel, built with PHP and integrated with Supabase (PostgreSQL). Although themed around the Pokémon universe (leveraging the PokeAPI), the system's core features an Access Control and Team Management system engineered to coordinate emergency missions.
 
-## 🚀 Funcionalidades Clave
-- **Autenticación Segura:** Sistema de login con cifrado BCRYPT.
-- **Gestión de Roles:** Diferenciación entre Administrador (gestión total) y Rescatista (operaciones de campo).
-- **Unidades Especializadas:** Creación de equipos por especialidad (Fuego, Agua, Sismos) y asignación de personal.
-- **Bitácora de Salud:** Lógica de estados ("Herido" -> "Disponible") con registro histórico de altas médicas.
-- **Integración de API:** Consumo de PokeAPI para automatizar la obtención de datos, imágenes y tipos.
-- **Filtros Avanzados:** Panel de control con filtrado dinámico por estado y unidad asignada.
-
-## 🛠️ Tecnologías Utilizadas
-- **Backend:** PHP 8.x (Arquitectura modular con PDO).
-- **Base de Datos:** MySQL / MariaDB.
-- **Frontend:** Tailwind CSS (Diseño responsivo y Dark Mode).
-- **API:** PokeAPI.
-
-## ⚙️ Instalación en Local
-1. Clona el repositorio: `git clone https://github.com/tu-usuario/adoptaUnPokemon.git`
-2. Importa el archivo `/db/database.sql` en tu servidor MySQL (XAMPP).
-3. Configura las credenciales en `config/Database.php`.
-4. Mueve la carpeta a tu directorio `htdocs` y accede vía `localhost`.
-
-## Puedes usar estar credenciales
-Para admin: admin@admin.com
-Pass: 123456
-Para rescatista: benito@benito.com
-Pass: 123456
 ---
-*Proyecto con fines educativos sobre arquitectura de software y gestión de equipos.*
+
+## Key Features
+
+* **Role-Based Access Control (RBAC):** Secure login system with BCRYPT encryption, differentiating between Administrator (full system management) and Rescuer (field operations) roles.
+* **Specialized Units:** Tools to create rescue teams based on terrain or specialty (e.g., Fire, Water, Seismic) and dynamically assign available personnel.
+* **Status & Log Management:** Internal logic tracking status changes (e.g., "Injured" to "Available") with an automated log recording medical clearances and duty assignments.
+* **API Integration:** Consumes PokeAPI to automate data fetching, handling sprite imagery and type alignments dynamically.
+* **Advanced Filtering:** Control dashboard featuring multi-criteria live filters by operational status and assigned unit.
+
+---
+
+## Visual Preview
+
+![Admin Dashboard](assets/screenshots/dashboard.png)
+
+<p align="center">
+  <em>Figure 1: Main Administrative Dashboard and Unit Overview.</em>
+</p>
+
+![User Login](assets/screenshots/login.png)
+
+<p align="center">
+  <em>Figure 2: Access Control and Authentication Interface.</em>
+</p>
+
+---
+
+## Built With
+
+* **Backend:** PHP 8.x (Modular architecture using PDO)
+* **Database:** Supabase (PostgreSQL cloud hosting)
+* **Frontend:** Tailwind CSS (Responsive layout and native Dark Mode)
+* **External Services:** PokeAPI
