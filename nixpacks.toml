@@ -5,4 +5,4 @@ php = {}
 nixPkgs = ["php, "php84Packages.pdo_pgsql", "php84Packages.pgsql"]
 
 [start]
-cmd = "php -S 0.0.0.0:$PORT -t public"
+cmd = "php -S 0.0.0.0:$PORT"
