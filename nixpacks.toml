@@ -2,7 +2,7 @@
 php = {}
 
 [phases.setup]
-providers = ["php"]
+nixPkgs = ["php"]
 
 [start]
 cmd = "php -S 0.0.0.0:$PORT"
